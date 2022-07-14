@@ -1,0 +1,429 @@
+% Document setup
+\documentclass[article, a4paper, 11pt, oneside]{memoir}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[UKenglish]{babel}
+
+% Document info
+\newcommand\doctitle{Leary \& Kristiansen, \emph{A Friendly Introduction to Mathematical Logic}}
+\newcommand\docauthor{Danny Nygård Hansen}
+
+% Formatting and layout
+\usepackage[autostyle]{csquotes}
+\usepackage[final]{microtype}
+\usepackage{xcolor}
+\frenchspacing
+\usepackage{latex-sty/articlepagestyle}
+\usepackage{latex-sty/articlesectionstyle}
+% \usepackage{latex-sty/amalgsymbol}
+
+% Fonts
+\usepackage[largesmallcaps]{kpfonts}
+\DeclareSymbolFontAlphabet{\mathrm}{operators} % https://tex.stackexchange.com/questions/40874/kpfonts-siunitx-and-math-alphabets
+\linespread{1.06}
+\let\mathfrak\undefined
+\usepackage{eufrak}
+\usepackage{inconsolata}
+% \usepackage{amssymb}
+
+% Hyperlinks
+\usepackage{hyperref}
+\definecolor{linkcolor}{HTML}{4f4fa3}
+\hypersetup{%
+	pdftitle=\doctitle,
+	pdfauthor=\docauthor,
+	colorlinks,
+	linkcolor=linkcolor,
+	citecolor=linkcolor,
+	urlcolor=linkcolor,
+	bookmarksnumbered=true
+}
+
+% Equation numbering
+\numberwithin{equation}{chapter}
+
+% Footnotes
+\footmarkstyle{\textsuperscript{#1}\hspace{0.25em}}
+
+% Mathematics
+\usepackage{latex-sty/basicmathcommands}
+\usepackage{latex-sty/framedtheorems}
+\usepackage{latex-sty/topologycommands}
+\usepackage{tikz-cd}
+\tikzcdset{arrow style=math font} % https://tex.stackexchange.com/questions/300352/equalities-look-broken-with-tikz-cd-and-math-font
+\usetikzlibrary{babel}
+
+% Lists
+\usepackage{enumitem}
+\setenumerate[0]{label=\normalfont(\alph*)}
+\setlist{  
+  listparindent=\parindent,
+  parsep=0pt,
+}
+
+% Bibliography
+\usepackage[backend=biber, style=authoryear, maxcitenames=2, useprefix]{biblatex}
+\addbibresource{references.bib}
+
+% Title
+\title{\doctitle}
+\author{\docauthor}
+
+\newcommand{\setF}{\mathbb{F}}
+\newcommand{\ev}{\mathrm{ev}}
+\newcommand{\calT}{\mathcal{T}}
+\newcommand{\calU}{\mathcal{U}}
+\newcommand{\calB}{\mathcal{B}}
+\newcommand{\calE}{\mathcal{E}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calO}{\mathcal{O}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\strucS}{\mathfrak{S}}
+\DeclarePairedDelimiter{\gen}{\langle}{\rangle} % Generating set
+\newcommand{\frakL}{\mathfrak{L}}
+\newcommand{\frakN}{\mathfrak{N}}
+\newcommand{\frakA}{\mathfrak{A}}
+\newcommand{\frakB}{\mathfrak{B}}
+\newcommand{\ab}{\mathit{ab}}
+
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\coker}{coker}
+\DeclareMathOperator{\stab}{Stab}
+
+% Categories
+\newcommand{\cat}[1]{\mathcal{#1}}
+\newcommand{\scat}[1]{\mathbf{#1}} % category supposed to be small
+\newcommand{\ncat}[1]{\mathbf{#1}} % named categories like Set, Top
+
+\newcommand{\catSet}{\ncat{Set}} % Category of sets
+\newcommand{\catGrp}{\ncat{Grp}} % Category of groups
+\newcommand{\catAb}{\ncat{Ab}} % Category of abelian groups
+\newcommand{\catRing}{\ncat{Ring}} % Category of rings
+\newcommand{\catFld}{\ncat{Fld}} % Category of fields
+
+\newcommand{\catMod}[1]{{#1\text{-}\scat{Mod}}}
+\newcommand{\catRMod}{\catMod{R}}
+
+\newcommand{\End}{\mathrm{End}}
+\newcommand{\Hom}{\mathrm{Hom}}
+
+\DeclareMathOperator{\chr}{char}
+
+
+%% Framed exercise environment
+
+\mdfdefinestyle{swannexercise}{%
+    skipabove=0.5em plus 0.4em minus 0.2em,
+	skipbelow=0.5em plus 0.4em minus 0.2em,
+	leftmargin=-5pt,
+	rightmargin=-5pt,
+	innerleftmargin=5pt,
+	innerrightmargin=5pt,
+	innertopmargin=5pt,
+	innerbottommargin=4pt,
+	linewidth=0pt,
+	splittopskip=1.2em minus 0.2em,
+	splitbottomskip=0.5em plus 0.2em minus 0.1em,
+	backgroundcolor=backgroundcolor,
+	frametitlebackgroundcolor=titlecolor,
+	frametitlefont={\scshape},
+    theoremseparator={},
+    % theoremspace={},
+	frametitleaboveskip=3pt,
+	frametitlebelowskip=2pt
+}
+
+\mdtheorem[style=swannexercise]{exerciseframed}{Exercise}
+
+\let\oldexerciseframed\exerciseframed
+\renewcommand{\exerciseframed}{%
+  \crefalias{theorem}{exerciseframed}%
+  \oldexerciseframed}
+
+\usepackage{listofitems}
+
+\settocdepth{subsection}
+\renewenvironment{exerciseframed}[1][]{%
+    \setsepchar{.}%
+    \readlist*\mylist{#1}%
+    \def\smalllabel{\mylist[2].\mylist[3]}%
+    \refstepcounter{exerciseframed}%
+    % \addcontentsline{toc}{subsection}{Exercise \smalllabel}%
+    \begin{exerciseframed*}[#1]%
+    \label{ex:#1}%
+}{%
+    \end{exerciseframed*}%
+}
+
+% https://tex.stackexchange.com/a/23491/63353
+\newcommand{\RNum}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+
+\newcommand{\exref}[1]{%
+    % \setsepchar{.}%
+    % \readlist*\mylist{#1}%
+    % \ifnum \arabic{chapter}=\mylist[1]
+    %     \def\mylabel{\mylist[2].\mylist[3]}%
+    % \else
+    %     \def\mylabel{\RNum{\mylist[1]}.\mylist[2].\mylist[3]}%
+    % \fi
+    \hyperref[ex:#1]{Exercise~#1}%
+}
+
+\theoremstyle{nonumberplain}
+\theoremsymbol{\ensuremath{\square}}
+\newtheorem{solution}{Solution}
+
+\let\oldsolution\solution
+\renewcommand{\solution}{%
+  \crefalias{theorem}{solution}%
+  \oldsolution}
+
+\newcommand{\solutionlabelfont}[1]{{\normalfont\color{linkcolor}#1}}
+\newlist{solutionsec}{enumerate}{1}
+\setlist[solutionsec]{leftmargin=0pt, parsep=0pt, listparindent=\parindent, font=\solutionlabelfont, label=(\alph*), labelsep=0pt, labelwidth=20pt, itemindent=20pt, align=left, itemsep=10pt}
+
+
+% \renewcommand{\thechapter}{\Roman{chapter}}
+% \renewcommand{\thesection}{\arabic{section}}
+
+\DeclarePairedDelimiter{\ord}{\lvert}{\rvert}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Inn}{Inn}
+
+\usepackage{caption} % Links to figures jump correctly
+\Crefname{figure}{Figure}{Figures}
+
+
+\newenvironment{displaytheorem}{%
+	\begin{displayquote}\itshape%
+}{%
+	\end{displayquote}%
+}
+
+
+\newcommand{\upset}{\operatorname{\uparrow}}
+\newcommand{\downset}{\operatorname{\downarrow}}
+\newcommand{\matgroup}[3]{\mathrm{#1}_{#2}(#3)}
+\newcommand{\GL}[2]{\matgroup{GL}{#1}{#2}}
+\newcommand{\SL}[2]{\matgroup{SL}{#1}{#2}}
+\newcommand{\catGSet}[1][G]{{#1\text{-}\catSet}}
+\newcommand{\frakI}{\mathfrak{I}}
+\newcommand{\field}{\mathbb{F}}
+\let\bigcoprod\coprod
+\renewcommand{\coprod}{\sqcup}
+
+
+% For logic
+\renewcommand{\mylistlabelfont}[1]{{\normalfont\color{linkcolor}\textit{#1}:}}
+\newlist{notelist}{description}{1}
+\setlist[notelist]{leftmargin=0pt, parsep=0pt, listparindent=\parindent, font=\mylistlabelfont}
+
+
+\begin{document}
+
+\maketitle
+
+\chapter{Structures and Languages}
+
+\newcommand{\limplies}{\vDash}
+\newcommand{\valid}{\vDash}
+\newcommand{\lcond}{\rightarrow}
+\let\oldmodels\models
+\renewcommand{\models}{\vDash}
+\newcommand{\sats}[1]{\vDash_{#1}}
+\newcommand{\notsats}[1]{\not\vDash_{#1}}
+\newcommand{\vars}{\mathit{Vars}}
+
+\begin{notelist}
+    \item[Languages]
+    A \emph{first-order language} $\calL$ is actually an (infinite) alphabet consisting of the usual symbols. Notice that we have a \emph{countable} number of variables. These variables are common to all first-order languages, so we use the symbol $\vars$, which does not depend on which language we are considering, to denote the set of variables.
+    
+    On the other hand we can have an arbitrary number of constant, function and relation symbols. I am not sure if the number of these symbols makes any difference to the theory. Instead of having a separate category for constants we may consider a constant as a function with arity $0$. The arity of function symbols may, as in universal algebra, be formalised as a partial function $\rho \colon \calL \nrightarrow \naturals$, whose domain is the set of function and relation symbols.
+
+    \item[Terms]
+    Strings can be terms of a particular first-order language $\calL$. We think of terms as picking out an element of the universe under consideration. These are obtained either as variables or as the images of functions in $\calL$ (or as constants if these are considered a class of their own).
+    
+    \item[Formulas]
+    As with terms, strings can be formulas of a particular first-order language $\calL$. Formulas are supposed to represent propositions about the objects in the universe. We may first construct formulas from $\calL$-terms by applying relations (e.g. equality) to a list of terms. Afterwards we may apply either quantifiers or the usual connectives from propositional logic to the resulting formulas. Notice that the particular language $\calL$ only determines which terms are allowed and does not affect how these terms can be used to construct formulas.
+    
+    A formula is said to be \emph{atomic} if it is on the form $= t_1 t_2$ or $R t_1 \cdots t_n$ for an $n$-ary relation symbol $R$ and terms $t_1, \ldots, t_n$.
+    
+    We say that a string $\psi$ is a \emph{subformula} of a formula $\phi$ if $\psi$ itself is a formula, and if it is a substring of $\phi$. By unique readability for formulas (Exercise~1.4.8) each formula $\phi$ that is not atomic can be broken up into smaller formulas in a unique way. These give rise to a (unique) construction tree for $\phi$, and the subformulas are precisely the formulas that appear on this tree.
+
+    L\&K call the symbol $\forall$ itself a quantifier, but by \emph{quantifier} we will mean $\forall v$ for a variable $v$. The \emph{scope} of a quantifier $\forall v$ occurring in a formula $(\forall v)(\alpha)$ is the subformula $\alpha$.
+
+    \item[Free variables]
+    We define recursively what it means for a variable $v$ to be \emph{free} in a formula $\phi$. Alternatively we may simply say that $v$ is free in $\phi$ if it is not in the scope of any quantifier $\forall v$ occurring in $\phi$.
+    
+    This also makes it easy to define what it means for an \emph{occurrence} of a variable $v$ in $\phi$ to be free: Namely that this occurrence does not lie in the scope of any quantifier $\forall v$.
+
+    \item[Sentences]
+    A \emph{sentence} in $\calL$ is a formula of $\calL$ with no free variables.
+    
+    \item[Structures]
+    An \emph{$\calL$-structure} $\frakA$ consists of a nonempty set $A$, the \emph{universe} of $\frakA$, along with functions $f^\frakA \colon A^{\rho(f)} \to A$ and relations $R^\frakA \in A^{\rho(R)}$ for each function symbol $f$ and relation symbol $R$ in $\calL$. The particular language $\calL$ does not place any constraints on the universe $A$.
+    
+    Compare this to universal algebra: Here we usually specify a collection $\calF$ of operation symbols and a type $\rho \colon \calF \to \naturals$ specifying the arity of each symbol. A structure $\frakA$ of type $\rho$ is then a nonempty set $A$ along with $\rho(f)$-ary operations $f^\frakA$ on $A$ for each $f \in \calF$. In first-order logic we also allow relations, but otherwise the definition of a structure is basically the same.
+
+    \item[Variable assignment functions]
+    A \emph{(variable) assignment function} into an $\calL$-structure $\frakA$ is a function $\vars \to A$. This is the first step towards connecting the syntax and semantics of $\calL$. Notice that regardless of the particular structure or language, it is always the variables in $\vars$ that we need to assign values to. The codomain $A$ however is determined by the structure $\frakA$ in question, which itself depends on the language $\calL$ (though $A$ does not as such depend on $\calL$).
+
+    Given $s \colon \vars \to A$, a variable $x$ and a particular value $a \in A$, we define an \emph{$x$-modification} of $s$ denoted $s[x \mid a]$ with $s[x \mid a](x) = a$.
+
+    \item[Term assignment function]
+    Given $s \colon \vars \to A$ we define the \emph{term assignment function} $\overline{s}$ generated by $s$. This is defined by recursion on terms, and it is clearly the unique extension $s'$ of $s$ to all terms satisfying that
+    %
+    \begin{equation*}
+        s'(f t_1 \cdots t_n)
+            = f^\frakA (s'(t_1), \ldots, s'(t_n))
+    \end{equation*}
+    %
+    for all function symbols $f$ and all terms $t_1, \ldots, t_n$. Indeed, Lemma~1.7.6 shows that only the variables occurring in a particular term $t$ determines the value of $\overline{s}$ in $t$.
+
+    \item[Satisfaction]
+    We define what it means for an $\calL$-structure $\frakA$ to \emph{satisfy} an $\calL$-formula $\phi$ with assignment $s \colon \vars \to A$ recursively. In the affirmative case we write $\frakA \sats{s} \phi$.
+    
+    The base cases are the atomic formulas. This completes the connection between the syntax and semantics of $\calL$: We have now effectively associated a truth value to each $\calL$-formula, provided that we are given an interpretation of all the symbols in such a formula, namely function symbols (i.e. $\frakA$) and variables (i.e. $s$).
+
+    Notice that the definition of satisfaction is \emph{informal}, even if it is precise. Clearly we cannot hope to define the semantics of $\calL$ in terms of $\calL$ itself, so we must resort to a definition in natural language using terms like \enquote{not}, \enquote{or} and \enquote{for all}.
+
+    Proposition~1.7.7 shows that satisfaction of a formula $\phi$ only depends on the free variables occurring in $\phi$.
+
+    \item[Models and validity]
+    An $\calL$-structure $\frakA$ is a \emph{model} of an $\calL$-formula $\phi$, written $\frakA \models \phi$, if $\frakA \sats{s} \phi$ for all assignment functions $s$. In in turn $\frakA \models \phi$ for all $\calL$-structures $\frakA$, then we say that $\phi$ is \emph{valid} and write $\valid \phi$.
+
+    If $\sigma$ is a sentence in $\calL$, then $\frakA \models \sigma$ if and only if $\frakA \sats{s} \sigma$ for \emph{any} $s$, in which case we say that $\sigma$ is \emph{true in $\frakA$}.
+
+    \item[Substitutions]
+    We define recursively how to substitute a term in place of a variable, first in terms and then in formulas. L\&K use the notation $u^x_t$ for the term $u$ with every occurrence of $x$ replaced with the term $t$, but the notation $u[t/x]$ is also common. We similarly write $\phi^x_t$ for a formula $\phi$. % TODO: Decide which to use myself
+
+    If $\phi$ is a formula, $t$ a term and $x$ a variable, then we define when $t$ is \emph{substitutable} for $x$ in $\phi$. We do this by recursion, and the case when $\phi$ is on the form $(\forall y)(\alpha)$ is the interesting one. In this case $t$ is substitutable for $x$ if either of the following holds:
+    %
+    \begin{enumerate}
+        \item $x$ is not free in $\phi$, which includes the case when $y = x$. In this case every occurrence of $x$ (as a variable and not in a quantifier) in $\phi$ lies in the scope of a quantifier $\forall x$. But when performing the substitution $\phi^x_t$ the relevant subformula $(\forall x)(\beta)$ is left untouched. Hence there is no danger of making a substitution in a problemating place, since we aren't making any substitutions!
+
+        \item $y$ does not occur in $t$, and $t$ is substitutable for $x$ in $\alpha$. A problem could happen if the former is not satisfied, since any free occurrence of $y$ would be bound by the quantifier, which is not desirable. The latter condition is of course necessary.
+    \end{enumerate}
+
+    \item[Logical implication]
+    If $\Gamma$ and $\Delta$ are sets of $\calL$-formulas, then we say that $\Gamma$ \emph{logically implies} $\Delta$, denoted $\Gamma \limplies \Delta$, if $\frakA \models \Gamma$ implies $\frakA \models \Delta$ for all $\calL$-structures $\frakA$.
+
+    If $\emptyset \limplies \phi$, then we say that $\phi$ is \emph{valid} and write $\valid \phi$. This agrees with the definition of validity above.
+\end{notelist}
+
+
+
+\begin{exerciseframed}[1.9.3]
+    Suppose that $\phi$ is an $\calL$-formula and $x$ is a variable. Prove that $\phi$ is valid if and only if $(\forall x)(\phi)$ is valid. Thus, if $\phi$ has free variables $x$, $y$, and $z$, $\phi$ will be valid if and only if $\forall x \forall y \forall z \phi$ is valid. The sentence $\forall x \forall y \forall z \phi$ is called the \emph{universal closure} of $\phi$.
+\end{exerciseframed}
+
+\begin{solution}
+    Notice that $\valid (\forall x)(\phi)$ if and only if $\frakA \sats{s} (\forall x)(\phi)$ for all $\calL$-structures $\frakA$ and variable assignment functions $s$ into $\frakA$. This is the case if and only if $\frakA \sats{s[x \mid a]} \phi$ for all $\frakA$, $s$ and elements $a$ in the universe $A$. If $\phi$ is valid then this follows.
+    
+    Conversely, notice that $s = s[x \mid s(x)]$, so every variable assignment function into $\frakA$ is on the form $s[x \mid a]$ for some $s$ and $a$ in $A$. Hence the above implies that $\frakA \sats{s} \phi$ for all $\frakA$ and $s$. Hence $\frakA \models \phi$ for all $\frakA$, so $\valid \phi$.
+\end{solution}
+
+
+\begin{exerciseframed}[1.9.4]
+    \begin{enumerate}
+        \item Assume that $\limplies (\phi \lcond \psi)$. Show that $\phi \limplies \psi$.
+        \item Suppose that $\phi$ is $x < y$ and $\psi$ is $z < w$. Show that $\phi \limplies \psi$ but $\not\valid (\phi \lcond \psi)$.
+    \end{enumerate}
+\end{exerciseframed}
+
+\begin{solution}
+\begin{solutionsec} % TODO why different vDashes with not and subscript??
+    \item Let $\frakA$ be a structure such that $\frakA \models \phi$, and let $s$ be any variable assignment function into $\frakA$. In particular we thus have $\frakA \sats{s} \phi$. Furthermore, $\frakA \sats{s} (\phi \to \psi)$, which is the case if and only if either $\frakA \notsats{s} \phi$ or $\frakA \sats{s} \psi$. The former is impossible, so the latter holds. Since $s$ was arbitrary we have $\frakA \models \psi$, so $\phi \limplies \psi$ as desired.
+    
+    \item We first show that $\phi \limplies \psi$, so let $\frakA$ be a structure such that $\frakA \models \phi$. We must then show that $\frakA \models \psi$. If ${<^\frakA} = A \prod A$ then this is obvious. Assume thus that there exist $a,b \in A$ such that $(a,b) \not\in {<^\frakA}$, i.e. such that $a <^\frakA b$ is false. Let $s$ be a variable assignment function into $\frakA$ with $s(x) = a$ and $s(y) = b$. Then $\frakA \notsats{s} \phi$, so nothing has to be proved. This shows that $\phi \limplies \psi$.
+    
+    We next show that $\frakN \not\models (\phi \lcond \psi)$. Let $r$ be a variable assignment function into $\frakN$ with $r(x) = 0$, $r(y) = 1$, $r(z) = 1$, and $r(w) = 0$. Then $\frakN \sats{r} \phi$ but $\frakN \notsats{r} \psi$, so $\frakN \notsats{r} (\phi \lcond \psi)$ as desired.
+\end{solutionsec}
+\end{solution}
+
+
+\chapter{Deductions}
+
+\newcommand{\proves}{\vdash}
+\newcommand{\thm}[1]{\mathit{Thm}_{#1}}
+
+\begin{notelist}
+    \item[Deductions]
+    We fix a language $\calL$, a set $\Lambda$ of \emph{logical axioms}, and a set of ordered pairs $(\Gamma,\phi)$ called \emph{rules of inference}. We further have a set $\Sigma$ of \emph{nonlogical axioms}, whose content depends on the application. A \emph{deduction from $\Sigma$} is then a finite sequence of $\calL$-formulas such that each formula is either an axiom or follows from the previous formulas by the rules of inference. If there exists a deduction from $\Sigma$ whose last element is $\phi$, then this deduction is called a \emph{deduction from $\Sigma$ of $\phi$}, and we write $\Sigma \proves \phi$.
+
+    We denote by $\thm{\Sigma}$ the set of formulas $\phi$ such that $\Sigma \proves \phi$. This is clearly the smallest set of formulas containing the axioms that is closed under application of the rules of inference.
+
+    \item[Logical axioms]
+    The logical axioms include:
+    %
+    \begin{enumerate}
+        \item[$(E_1)$] Reflexivity of variables, i.e. $x = x$ for every variable $x$.
+        \item[$(E_2)$] Substitution in function symbols: If two variables are the same, we can substitute them as arguments to any function symbol.
+        \item[$(E_3)$] Substitution in relation symbols: Same as above, but for relation symbols.
+    \end{enumerate}
+    %
+    For instance, for each $n$-ary function symbol $f$ in $\calL$ and each collection $x_1, \ldots, x_n, y_1, \ldots, x_n$ of variables we get an axiom of the second kind above. Hence even if there is only one function symbol in $\calL$, as long as this as positive arity there are infinitely many axioms of this kind: If $f$ is unary, then we have an axiom
+    %
+    \begin{equation*}
+        v_i = v_j \lcond f(v_i) = f(v_j)
+    \end{equation*}
+    %
+    for all $i,j \in \ints_+$. Hence we already have a potentially massive collection of axioms.
+
+    We also have axioms for quantifiers. For every variable $x$, term $t$ and formula $\phi$ such that $t$ is substitutable for $x$ in $\phi$ we have the following:
+    %
+    \begin{enumerate}
+        \item[$(Q_1)$] Universal instantiation: $(\forall x \phi) \lcond \phi^x_t$.
+        \item[$(Q_2)$] Existential generalisation: $\phi^x_t \lcond (\exists x \phi)$.
+    \end{enumerate}
+
+    \item[Propositional consequence]
+    Consider the restricted language $\calP$ only containing a set of propositional variables and the logical connectives. Formulas of $\calP$ are given recursively in the usual way, and the semantics of $\calP$ is that of standard propositional logic. In particular, a formula of $\calP$ is a \emph{tautology} if every assignment of truth values to the propositional variables makes it true.
+
+    Given an $\calL$-formula $\phi$, we convert it to a $\calP$-formula $\phi_P$ as follows:
+    %
+    \begin{enumerate}
+        \item Systematically replace with propositional variables every occurrence of subformulas on the form $(\forall x)(\alpha)$ that are not in the scope of another quantifier.
+        \item Systematically replace in a systematic way with propositional variables every remaining atomic subformula.
+    \end{enumerate}
+    %
+    By \enquote{systematically} we mean that multiple occurrences of the same subformula is replaced with the same propositional variable. 
+
+    If $\Gamma_P$ is a set of $\calP$-formulas and $\phi_P$ is a $\calP$-formula, then $\phi_P$ is a \emph{propositional consequence} of $\Gamma_P$ if $\phi_P$ is true under every truth assignment making every formula in $\Gamma_P$ true.
+
+    If $\Gamma$ is a \emph{finite} set of $\calL$-formulas and $\phi$ is an $\calL$-formula, then $\phi$ is a \emph{propositional consequence} of $\Gamma$ if $\phi_P$ is a propositional consequence of $\Gamma_P$. I'm not sure exactly how significant the finiteness condition is. Perhaps it has to do with us having to go through every formula in $\Gamma$ and convert each to a propositional formula? Perhaps the corresponding rules of inference will not be decidable.
+
+    \item[Rules of inference]
+    We first have the following:
+    %
+    \begin{enumerate}
+        \item[(PC)] If an $\calL$-formula $\phi$ is a propositional consequence of a finite set $\Gamma$ of $\calL$-formulas, then $(\Gamma,\phi)$ is a rule of inference.
+    \end{enumerate}
+    
+    We also have the rules
+    %
+    \begin{equation*}
+        \bigl( \{ \psi \lcond \phi \}, \psi \lcond (\forall x)(\phi) \bigr)
+        \quad \text{and} \quad
+        \bigl( \{ \phi \lcond \psi \}, (\exists x)(\phi) \lcond \psi \bigr)
+    \end{equation*}
+    %
+    of type (QR), where $x$ is not free in $\psi$. This assumption is supposed to formalise that we make no assumptions about $x$. Intuitively, if $x$ occurs in $\psi$ then we may simply make the substitution $\psi^x_y$, where $y \neq x$ is a variable that does not occur in $\psi$. If we can then somehow prove a formula $\phi$ in which $x$ is free, then this $x$ cannot have come from $\psi$. Hence $\phi$ must hold whatever $x$ is.
+    
+    The second rule says that if $x$ somehow \enquote{disappears} when proving $\psi$, then it didn't matter what $x$ was. Hence it's enough that there exists some $x$.
+
+    \item[Soundness]
+    If $\Sigma \proves \phi$, then $\Sigma \limplies \phi$. [TODO proof]
+\end{notelist}
+
+
+
+\end{document}
