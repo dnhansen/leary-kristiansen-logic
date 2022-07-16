@@ -226,6 +226,9 @@
 \newlist{notelist}{description}{1}
 \setlist[notelist]{leftmargin=0pt, parsep=0pt, listparindent=\parindent, font=\mylistlabelfont}
 
+% TODO positive integers
+\newcommand{\posints}{\ints_+}
+
 
 \begin{document}
 
@@ -353,7 +356,8 @@
 \chapter{Deductions}
 
 \newcommand{\proves}{\vdash}
-\newcommand{\thm}[1]{\mathit{Thm}_{#1}}
+\newcommand{\thm}[1]{\mathrm{Thm}_{#1}}
+\newcommand{\colonequiv}{\mathbin{\vcentcolon\equiv}}
 
 \begin{notelist}
     \item[Deductions]
@@ -376,7 +380,7 @@
         v_i = v_j \lcond f(v_i) = f(v_j)
     \end{equation*}
     %
-    for all $i,j \in \ints_+$. Hence we already have a potentially massive collection of axioms.
+    for all $i,j \in \posints$. Hence we already have a potentially massive collection of axioms.
 
     We also have axioms for quantifiers. For every variable $x$, term $t$ and formula $\phi$ such that $t$ is substitutable for $x$ in $\phi$ we have the following:
     %
@@ -421,9 +425,175 @@
     The second rule says that if $x$ somehow \enquote{disappears} when proving $\psi$, then it didn't matter what $x$ was. Hence it's enough that there exists some $x$.
 
     \item[Soundness]
-    If $\Sigma \proves \phi$, then $\Sigma \limplies \phi$. [TODO proof]
+    If $\Sigma \proves \phi$, then $\Sigma \limplies \phi$. The proof goes through the following steps:
+    %
+    \begin{enumerate}
+        \item \emph{The logical axioms are valid}: The equality axioms are easy, and the quantifier axioms are clear enough but require a technical lemma (Theorem~2.6.2).
+        
+        \item \emph{If $(\Gamma,\theta)$ is a rule of inference, then $\Gamma \limplies \theta$}: For rules of type (PC) this follows by applying \exref{2.4.3}, then \exref{2.4.6}, and finally \exref{1.9.4}. For the rules of type (QR), this is shown by explicitly considering structures, applying Proposition~1.7.7 to make use of free variables (here we use the assumption that $x$ is not free in $\psi$).
+        
+        \item \emph{Proof of soundness}: We show that $\thm{\Sigma} \subseteq C \defn \set{\phi}{\Sigma \limplies \phi}$ by induction, showing that $C$ contains both $\Sigma$ and $\Lambda$, and that it is closed under application of any rule of inference $(\Gamma,\theta)$. The former is obvious.
+        
+        For the latter, assume that $\Gamma \subseteq C$, so that $\Sigma \limplies \Gamma$. For any structure $\frakA$ with $\frakA \models \Sigma$ we thus have $\frakA \models \Gamma$. Since $\Gamma \limplies \theta$ it thus follows that $\frakA \models \theta$.
+    \end{enumerate}
 \end{notelist}
 
+
+\begin{exerciseframed}[2.4.3]
+    Prove Lemma~2.4.2: If $\Gamma_P = \{ (\gamma_1)_P, (\gamma_2)_P, \ldots, (\gamma_n)_P \}$ is a nonempty finite set of propositional formulas and $\phi_P$ is a propositional formula, then $\phi_P$ is a propositional consequence of $\Gamma_P$ if and only if
+    %
+    \begin{equation*}
+        \bigl[ (\gamma_1)_P \land (\gamma_2)_P \land \ldots \land (\gamma_n)_P \bigr]
+            \lcond \phi_P
+    \end{equation*}
+    %
+    is a tautology.
+\end{exerciseframed}
+
+\begin{solution}
+    Obvious, since the above formula is true if and only if either all $(\gamma_i)_P$ and $\phi_P$ are true, or if at least one $(\gamma_i)_P$ is false.
+\end{solution}
+
+
+\begin{exerciseframed}[2.4.6]
+    Prove that if $\theta$ is not valid, then $\theta_P$ is not a tautology. Deduce that if $\theta_P$ is a tautology, then $\theta$ is valid.
+\end{exerciseframed}
+
+\begin{solution}
+    We prove this by induction on the (propositional) complexity of $\theta$ (i.e. the number of connectives in $\theta$). We in fact prove the following stronger claim:
+    %
+    \begin{displaytheorem}
+        If $\theta$ is not valid, then $\theta_P$ is not a tautology. And if $\frakA \sats{s} \theta$ for some structure $\frakA$ and assignment function $s$, then $\theta_P$ is not a contradiction.
+    \end{displaytheorem}
+    %
+    If $\theta$ is atomic or on the form $(\forall x)(\alpha)$ then this is obvious by the definition of $\theta_P$. Otherwise assume that the above holds for all formulas with smaller complexity than $\theta$. Notice that $\theta$ is not valid if and only if $\frakA \notsats{s} \theta$ for some $\frakA$ and $s$.
+
+    \begin{proofsec}
+        \item[$\theta \colonequiv (\neg \alpha)$]
+        First assume that $\theta$ is not valid. Notice that $\frakA \notsats{s} \theta$ implies that $\frakA \sats{s} \alpha$, so by induction $\alpha_P$ is not a contradiction. Hence $\theta_P = (\neg \alpha_P)$ is not a tautology.
+
+        On the other hand, if $\frakA \sats{s} \theta$ then $\frakA \notsats{s} \alpha$. Hence $\alpha$ is not valid, so by induction $\alpha_P$ is not a tautology. Thus $\theta_P$ is not a contradiction.
+
+        \item[$\theta \colonequiv (\alpha \lor \beta)$]
+        Assume that $\theta$ is not valid, so that $\frakA \notsats{s} \theta$. Then both $\frakA \notsats{s} \alpha$ and $\frakA \notsats{s} \beta$, i.e. neither $\alpha$ nor $\beta$ is valid. It follows by induction that $\alpha_P$ and $\beta_P$ are not tautologies, so neither is $\theta_P \colonequiv (\alpha_P \lor \beta_P)$.
+
+        Next, if $\frakA \sats{s} \theta$ then either $\frakA \sats{s} \alpha$ or $\frakA \sats{s} \beta$. Without loss of generality assume the former. By induction, $\alpha_P$ is then not a contradiction, so neither is $\theta_P$.
+    \end{proofsec}
+\end{solution}
+
+\newcommand{\false}{\bot}
+
+\begin{exerciseframed}[2.7.4]
+    Suppose that $\eta$ is a sentence. Prove that $\Sigma \proves \eta$ if and only if $\Sigma \union (\neg \eta) \proves \false$. Notice that this exercise tells us that our deductive system allows us to do proofs by contradiction.
+\end{exerciseframed}
+%
+Here $\false$ denotes the contradiction $[(\forall x)(x = x)] \land \neg [(\forall x)(x = x)]$.
+
+\begin{solution}
+    First assume that $\Sigma \proves \eta$. Notice then that $\Sigma \union (\neg \eta) \proves \eta$, and we also clearly have $\Sigma \union (\neg \eta) \proves (\neg \eta)$. Hence $\Sigma \union (\neg \eta) \proves \{ \eta, (\neg \eta) \}$. But notice that $\{ \eta, (\neg \eta) \} \proves \false$ by (PC) since no truth assignment makes $\{ \eta_P, (\neg \eta_P) \}$ true. This implies that $\Sigma \union (\neg \eta) \proves \false$ as desired.
+
+    Conversely assume that $\Sigma \union (\neg \eta) \proves \false$. But $\{ \false \} \proves \eta$ since any formula is a propositional consequence of $\{ \false \}$. Hence $\Sigma \proves \eta$.
+\end{solution}
+
+
+\chapter{Completeness and Compactness}
+
+\begin{notelist}
+    \item[Completeness]
+    If $\Sigma \limplies \phi$, then $\Sigma \proves \phi$. We first show that it suffices to prove a seemingly weaker statement:
+    %
+    \begin{enumerate}
+        \item In $\Sigma \proves \phi$ we may assume that $\phi$ is a sentence, since by Lemma~2.7.2, $\Sigma \proves \phi$ if and only if $\Sigma \proves \phi'$, where $\phi'$ is the universal closure of $\phi$. 
+        
+        The same is true for $\Sigma \limplies \phi$: Here we must show that this implies $\Sigma \limplies \phi'$. It suffices to show that $\Sigma \limplies (\forall x)(\phi)$, i.e. where we add a single quantifier. Let $\frakA$ be a structure such that $\frakA \models \Sigma$. We must then show that $\frakA \sats{s} (\forall x)(\phi)$ for all assignment functions $s$, i.e. that $\frakA \sats{s[x|a]} \phi$ for all $a \in A$. But this is clear since $\frakA \models \phi$.
+
+        \item By Lemma~2.7.3 we may in $\Sigma \proves \phi$ also assume that every element of $\Sigma$ is a sentence: Let $\Sigma'$ be the set of universal closures of elements in $\Sigma$. Then we claim that if $\Sigma' \proves \phi$, then $\Sigma \proves \phi$. For any derivation $D$ from $\Sigma'$, say of the formula $\phi$, let $\Sigma'_D$ be the subset of $\Sigma'$ of all elements from $\Sigma'$ appearing in $D$. Then $D$ is also a derivation from $\Sigma'_D$ to $\phi$, so $\Sigma'_D \proves \phi$. But $\Sigma'_D$ is finite since $D$ is, so the lemma implies that also $\Sigma_D \proves \phi$, where $\Sigma_D$ is the set of elements from $\Sigma$ whose universal closures are the elements in $\Sigma'_D$.\footnote{Two elements in $\Sigma$ may have the same universal closure, so in constructing $\Sigma_D$ we make an arbitrary choice of a single element. Since $\Sigma'_D$ is finite, this does not require the Axiom of Choice. Alternatively, we may choose any enumeration (hence well-ordering) of $\Sigma$, which is possible since $\Sigma$ is countable, and pick the smallest relevant element.} Furthermore, $\Sigma_D \subseteq \Sigma$, so $\Sigma \proves \Sigma_D$. It follows that $\Sigma \proves \phi$ as claimed.
+        
+        Again the same is true for $\Sigma \limplies \phi$, namely that this implies that $\Sigma' \limplies \phi$. It suffices to show that $\Sigma' \limplies \Sigma$, and it further suffices to show that $\{ \sigma' \} \limplies \sigma$ for all $\sigma \in \Sigma$. But this is obvious.
+    \end{enumerate}
+    %
+    That is, we have proved the following implications:
+    %
+    \begin{equation*}
+        \Sigma \limplies \phi
+        \quad \implies \quad
+        \Sigma' \limplies \phi',
+        \quad \text{and} \quad
+        \Sigma' \proves \phi'
+        \quad \implies \quad
+        \Sigma \proves \phi.
+    \end{equation*}
+    %
+    Hence for completeness it suffices to show that $\Sigma' \limplies \phi'$ implies $\Sigma' \proves \phi'$. We may make the following further simplification:
+    %
+    \begin{enumerate}[resume]
+        \item It suffices to consider the case where $\phi$ is the sentence $\false$: For assume that $\Sigma \limplies \false$ implies $\Sigma \proves \false$, and that $\Sigma \limplies \phi$. Then $\Sigma \union (\neg \phi) \limplies \false$, implying that $\Sigma \union (\neg \phi) \proves \false$ by the assumption. This in turn implies that $\Sigma \proves \phi$ by \exref{2.7.4}.
+    \end{enumerate}
+    %
+    We prove the contrapositive: If $\Sigma$ is consistent, then there is a model of $\Sigma$.
+
+    Next we extend $\calL$ and $\Sigma$ by using the following constructions:
+    %
+    \begin{enumerate}
+        \item We \emph{extend $\calL$ by constants}: Let $c_n$ be a constant not in $\calL$ for all $n \in \posints$, and let $\tilde\calL = \calL \union \set{c_n}{n \in \posints}$. The constants $c_n$ are called \emph{Henkin constants}. Notice that since $\calL$ is countable, so is $\tilde\calL$. Furthermore, Lemma~3.2.3 shows that if $\Sigma$ is a consistent set of $\calL$-sentences, then it is also a consistent set of $\tilde\calL$-sentences.
+        
+        \item Since $\calL$ is countable, we may enumerate all sentences in $\calL$ on the form $(\exists x)(\theta)$. Notice that since these are sentences, the only free variable (if any) in $\theta$ is $x$. Denote these by $(\exists x)(\theta_n)$ for $n \in \posints$ and define the collection
+        %
+        \begin{equation*}
+            \tilde{H}
+                = \set{(\exists x)(\theta_n) \lcond \theta_n(c_n)}{\text{$(\exists x)(\theta_n)$ is an $\calL$-sentence}}
+        \end{equation*}
+        %
+        of \emph{Henkin axioms}, where $\theta_n(c_n)$ is shorthand for $(\theta_n)^x_{c_n}$.
+
+        \item Finally we define the set $\tilde\Sigma = \Sigma \union \tilde{H}$ of $\tilde\calL$-sentences. Lemma~3.2.4 shows that if $\Sigma$ is consistent, then $\tilde\Sigma$ is also consistent.
+    \end{enumerate}
+    %
+    Let $\calL_0 = \calL$ and $\Sigma_0 = \Sigma$. We apply the constructions above recursively as follows, for $n \in \naturals$:
+    %
+    \begin{enumerate}
+        \item Given a (countable) language $\calL_n$, extend it by constants to obtain $\calL_{n+1}$.
+        \item Construct the set $H_{n+1}$ of Henkin axioms in the language $\calL_{n+1}$.
+        \item Define $\Sigma_{n+1} = \Sigma_n \union H_{n+1}$.
+    \end{enumerate}
+    %
+    Finally let $\calL' = \bigunion_{n\in\naturals} \calL_n$ and $\hat\Sigma = \bigunion_{n\in\naturals} \Sigma_n$. Then the $\Sigma_n$ as well as $\hat\Sigma$ are consistent sets of $\calL'$-sentences [TODO].
+
+    We next extend $\hat\Sigma$ further. Since $\calL'$ is countable, there exists an enumeration $\{\sigma_n\}_{n \in \posints}$ of all $\calL'$-sentences. Let $\Sigma^0 = \hat\Sigma$ and let
+    %
+    \begin{equation*}
+        \Sigma^{n+1} =
+        \begin{cases}
+            \Sigma^n \union \{ \sigma_{n+1} \},
+                & \text{if $\Sigma^n \union \{ \sigma_{n+1} \}$ is consistent}, \\
+                \Sigma^n \union \{ \neg\sigma_{n+1} \},
+                & \text{otherwise}.
+        \end{cases}
+    \end{equation*}
+    %
+    Let $\Sigma' = \bigunion_{n\in\naturals} \Sigma^n$. Then each $\Sigma^n$ and $\Sigma'$ are consistent [TODO], and $\Sigma'$ is the maximal consistent extension of $\hat\Sigma$. This also has the property that if $\sigma$ is a sentence, then $\sigma \in \Sigma'$ if and only if $\Sigma' \proves \sigma$.
+
+    Finally we construct a model of $\Sigma'$. First, let $T$ be the set of variable-free terms of $\calL'$, and let $t_1 \sim t_2$ if $(t_1 = t_2) \in \Sigma'$. [TODO ref] shows that this is an equivalence relation. We construct the model $\frakA$ as follows:
+    %
+    \begin{enumerate}
+        \item \emph{Universe}: The universe $A$ is the quotient $T/{\sim}$.
+
+        \item \emph{Constants}: For each constant $c \in \calL'$ (including Henkin constants), we simply let $c^\frakA = [c]$, i.e. the $\sim$-equivalence class of $c$.
+
+        \item \emph{Functions}: If $f$ is an $n$-ary function symbol, then we let
+        %
+        \begin{equation*}
+            f^\frakA \bigl( [t_1], \ldots, [t_n] \bigr)
+                = [f t_1 \cdots t_n].
+        \end{equation*}
+        %
+        [TODO rem ref] shows that this is well-defined.
+
+        \item \emph{Relations}: Given an $n$-ary relation symbol $R$, we say that $R^\frakA([t_1], \ldots, [t_n])$ is true if $R t_1 \cdots t_n \in \Sigma'$. By [TODO ref] this is well-defined.
+    \end{enumerate}
+    %
+    Proposition~3.2.6 now shows that $\frakA \models \Sigma'$, so in particular $\frakA \models \Sigma$. Next define the restriction $\frakA|_\calL$ of $\frakA$ to $\calL$ in the obvious way. Then Lemma~3.2.7 shows that if $\sigma$ is an $\calL$-sentence, then $\frakA|_\calL \models \sigma$ if and only if $\frakA \models \sigma$. Thus we have $\frakA|_\calL \models \Sigma$ as desired.
+\end{notelist}
 
 
 \end{document}
