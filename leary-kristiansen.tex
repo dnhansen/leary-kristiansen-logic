@@ -116,6 +116,13 @@
 
 \DeclareMathOperator{\chr}{char}
 
+% https://tex.stackexchange.com/a/124311/63353
+\makeatletter
+\g@addto@macro\bfseries{\boldmath}
+\makeatother
+
+\newcommand{\keyword}[1]{{\bfseries #1}}
+
 
 %% Framed exercise environment
 
@@ -247,7 +254,7 @@
 
 \begin{notelist}
     \item[Languages]
-    A \emph{first-order language} $\calL$ is actually an (infinite) alphabet consisting of the usual symbols. Notice that we have a \emph{countable} number of variables. These variables are common to all first-order languages, so we use the symbol $\vars$, which does not depend on which language we are considering, to denote the set of variables.
+    A \keyword{first-order language} $\calL$ is actually an (infinite) alphabet consisting of the usual symbols. Notice that we have a \emph{countable} number of variables. These variables are common to all first-order languages, so we use the symbol $\vars$, which does not depend on which language we are considering, to denote the set of variables.
     
     On the other hand we can have an arbitrary number of constant, function and relation symbols. I am not sure if the number of these symbols makes any difference to the theory. Instead of having a separate category for constants we may consider a constant as a function with arity $0$. The arity of function symbols may, as in universal algebra, be formalised as a partial function $\rho \colon \calL \nrightarrow \naturals$, whose domain is the set of function and relation symbols.
 
@@ -257,32 +264,32 @@
     \item[Formulas]
     As with terms, strings can be formulas of a particular first-order language $\calL$. Formulas are supposed to represent propositions about the objects in the universe. We may first construct formulas from $\calL$-terms by applying relations (e.g. equality) to a list of terms. Afterwards we may apply either quantifiers or the usual connectives from propositional logic to the resulting formulas. Notice that the particular language $\calL$ only determines which terms are allowed and does not affect how these terms can be used to construct formulas.
     
-    A formula is said to be \emph{atomic} if it is on the form $= t_1 t_2$ or $R t_1 \cdots t_n$ for an $n$-ary relation symbol $R$ and terms $t_1, \ldots, t_n$.
+    A formula is said to be \keyword{atomic} if it is on the form $= t_1 t_2$ or $R t_1 \cdots t_n$ for an $n$-ary relation symbol $R$ and terms $t_1, \ldots, t_n$.
     
-    We say that a string $\psi$ is a \emph{subformula} of a formula $\phi$ if $\psi$ itself is a formula, and if it is a substring of $\phi$. By unique readability for formulas (Exercise~1.4.8) each formula $\phi$ that is not atomic can be broken up into smaller formulas in a unique way. These give rise to a (unique) construction tree for $\phi$, and the subformulas are precisely the formulas that appear on this tree.
+    We say that a string $\psi$ is a \keyword{subformula} of a formula $\phi$ if $\psi$ itself is a formula, and if it is a substring of $\phi$. By unique readability for formulas (Exercise~1.4.8) each formula $\phi$ that is not atomic can be broken up into smaller formulas in a unique way. These give rise to a (unique) construction tree for $\phi$, and the subformulas are precisely the formulas that appear on this tree.
 
-    L\&K call the symbol $\forall$ itself a quantifier, but by \emph{quantifier} we will mean $\forall v$ for a variable $v$. The \emph{scope} of a quantifier $\forall v$ occurring in a formula $(\forall v)(\alpha)$ is the subformula $\alpha$.
+    L\&K call the symbol $\forall$ itself a quantifier, but by \keyword{quantifier} we will mean $\forall v$ for a variable $v$. The \keyword{scope} of a quantifier $\forall v$ occurring in a formula $(\forall v)(\alpha)$ is the subformula $\alpha$.
 
     \item[Free variables]
-    We define recursively what it means for a variable $v$ to be \emph{free} in a formula $\phi$. Alternatively we may simply say that $v$ is free in $\phi$ if it is not in the scope of any quantifier $\forall v$ occurring in $\phi$.
+    We define recursively what it means for a variable $v$ to be \keyword{free} in a formula $\phi$. Alternatively we may simply say that $v$ is free in $\phi$ if it is not in the scope of any quantifier $\forall v$ occurring in $\phi$.
     
-    This also makes it easy to define what it means for an \emph{occurrence} of a variable $v$ in $\phi$ to be free: Namely that this occurrence does not lie in the scope of any quantifier $\forall v$.
+    This also makes it easy to define what it means for an \keyword{occurrence} of a variable $v$ in $\phi$ to be free: Namely that this occurrence does not lie in the scope of any quantifier $\forall v$.
 
     \item[Sentences]
-    A \emph{sentence} in $\calL$ is a formula of $\calL$ with no free variables.
+    A \keyword{sentence} in $\calL$ is a formula of $\calL$ with no free variables.
     
     \item[Structures]
-    An \emph{$\calL$-structure} $\frakA$ consists of a nonempty set $A$, the \emph{universe} of $\frakA$, along with functions $f^\frakA \colon A^{\rho(f)} \to A$ and relations $R^\frakA \in A^{\rho(R)}$ for each function symbol $f$ and relation symbol $R$ in $\calL$. The particular language $\calL$ does not place any constraints on the universe $A$.
+    An \keyword{$\calL$-structure} $\frakA$ consists of a nonempty set $A$, the \keyword{universe} of $\frakA$, along with functions $f^\frakA \colon A^{\rho(f)} \to A$ and relations $R^\frakA \in A^{\rho(R)}$ for each function symbol $f$ and relation symbol $R$ in $\calL$. The particular language $\calL$ does not place any constraints on the universe $A$.
     
     Compare this to universal algebra: Here we usually specify a collection $\calF$ of operation symbols and a type $\rho \colon \calF \to \naturals$ specifying the arity of each symbol. A structure $\frakA$ of type $\rho$ is then a nonempty set $A$ along with $\rho(f)$-ary operations $f^\frakA$ on $A$ for each $f \in \calF$. In first-order logic we also allow relations, but otherwise the definition of a structure is basically the same.
 
     \item[Variable assignment functions]
-    A \emph{(variable) assignment function} into an $\calL$-structure $\frakA$ is a function $\vars \to A$. This is the first step towards connecting the syntax and semantics of $\calL$. Notice that regardless of the particular structure or language, it is always the variables in $\vars$ that we need to assign values to. The codomain $A$ however is determined by the structure $\frakA$ in question, which itself depends on the language $\calL$ (though $A$ does not as such depend on $\calL$).
+    A \keyword{(variable) assignment function} into an $\calL$-structure $\frakA$ is a function $\vars \to A$. This is the first step towards connecting the syntax and semantics of $\calL$. Notice that regardless of the particular structure or language, it is always the variables in $\vars$ that we need to assign values to. The codomain $A$ however is determined by the structure $\frakA$ in question, which itself depends on the language $\calL$ (though $A$ does not as such depend on $\calL$).
 
-    Given $s \colon \vars \to A$, a variable $x$ and a particular value $a \in A$, we define an \emph{$x$-modification} of $s$ denoted $s[x \mid a]$ with $s[x \mid a](x) = a$.
+    Given $s \colon \vars \to A$, a variable $x$ and a particular value $a \in A$, we define an \keyword{$x$-modification} of $s$ denoted $s[x \mid a]$ with $s[x \mid a](x) = a$.
 
     \item[Term assignment function]
-    Given $s \colon \vars \to A$ we define the \emph{term assignment function} $\overline{s}$ generated by $s$. This is defined by recursion on terms, and it is clearly the unique extension $s'$ of $s$ to all terms satisfying that
+    Given $s \colon \vars \to A$ we define the \keyword{term assignment function} $\overline{s}$ generated by $s$. This is defined by recursion on terms, and it is clearly the unique extension $s'$ of $s$ to all terms satisfying that
     %
     \begin{equation*}
         s'(f t_1 \cdots t_n)
@@ -292,7 +299,7 @@
     for all function symbols $f$ and all terms $t_1, \ldots, t_n$. Indeed, Lemma~1.7.6 shows that only the variables occurring in a particular term $t$ determines the value of $\overline{s}$ in $t$.
 
     \item[Satisfaction]
-    We define what it means for an $\calL$-structure $\frakA$ to \emph{satisfy} an $\calL$-formula $\phi$ with assignment $s \colon \vars \to A$ recursively. In the affirmative case we write $\frakA \sats{s} \phi$.
+    We define what it means for an $\calL$-structure $\frakA$ to \keyword{satisfy} an $\calL$-formula $\phi$ with assignment $s \colon \vars \to A$ recursively. In the affirmative case we write $\frakA \sats{s} \phi$.
     
     The base cases are the atomic formulas. This completes the connection between the syntax and semantics of $\calL$: We have now effectively associated a truth value to each $\calL$-formula, provided that we are given an interpretation of all the symbols in such a formula, namely function symbols (i.e. $\frakA$) and variables (i.e. $s$).
 
@@ -301,14 +308,14 @@
     Proposition~1.7.7 shows that satisfaction of a formula $\phi$ only depends on the free variables occurring in $\phi$.
 
     \item[Models and validity]
-    An $\calL$-structure $\frakA$ is a \emph{model} of an $\calL$-formula $\phi$, written $\frakA \models \phi$, if $\frakA \sats{s} \phi$ for all assignment functions $s$. In in turn $\frakA \models \phi$ for all $\calL$-structures $\frakA$, then we say that $\phi$ is \emph{valid} and write $\valid \phi$.
+    An $\calL$-structure $\frakA$ is a \keyword{model} of an $\calL$-formula $\phi$, written $\frakA \models \phi$, if $\frakA \sats{s} \phi$ for all assignment functions $s$. In in turn $\frakA \models \phi$ for all $\calL$-structures $\frakA$, then we say that $\phi$ is \keyword{valid} and write $\valid \phi$.
 
-    If $\sigma$ is a sentence in $\calL$, then $\frakA \models \sigma$ if and only if $\frakA \sats{s} \sigma$ for \emph{any} $s$, in which case we say that $\sigma$ is \emph{true in $\frakA$}.
+    If $\sigma$ is a sentence in $\calL$, then $\frakA \models \sigma$ if and only if $\frakA \sats{s} \sigma$ for \emph{any} $s$, in which case we say that $\sigma$ is \keyword{true in $\frakA$}.
 
     \item[Substitutions]
     We define recursively how to substitute a term in place of a variable, first in terms and then in formulas. L\&K use the notation $u^x_t$ for the term $u$ with every occurrence of $x$ replaced with the term $t$, but the notation $u[t/x]$ is also common. We similarly write $\phi^x_t$ for a formula $\phi$. % TODO: Decide which to use myself
 
-    If $\phi$ is a formula, $t$ a term and $x$ a variable, then we define when $t$ is \emph{substitutable} for $x$ in $\phi$. We do this by recursion, and the case when $\phi$ is on the form $(\forall y)(\alpha)$ is the interesting one. In this case $t$ is substitutable for $x$ if either of the following holds:
+    If $\phi$ is a formula, $t$ a term and $x$ a variable, then we define when $t$ is \keyword{substitutable} for $x$ in $\phi$. We do this by recursion, and the case when $\phi$ is on the form $(\forall y)(\alpha)$ is the interesting one. In this case $t$ is substitutable for $x$ if either of the following holds:
     %
     \begin{enumerate}
         \item $x$ is not free in $\phi$, which includes the case when $y = x$. In this case every occurrence of $x$ (as a variable and not in a quantifier) in $\phi$ lies in the scope of a quantifier $\forall x$. But when performing the substitution $\phi^x_t$ the relevant subformula $(\forall x)(\beta)$ is left untouched. Hence there is no danger of making a substitution in a problemating place, since we aren't making any substitutions!
@@ -317,21 +324,39 @@
     \end{enumerate}
 
     \item[Logical implication]
-    If $\Gamma$ and $\Delta$ are sets of $\calL$-formulas, then we say that $\Gamma$ \emph{logically implies} $\Delta$, denoted $\Gamma \limplies \Delta$, if $\frakA \models \Gamma$ implies $\frakA \models \Delta$ for all $\calL$-structures $\frakA$.
+    If $\Gamma$ and $\Delta$ are sets of $\calL$-formulas, then we say that $\Gamma$ \keyword{logically implies} $\Delta$, denoted $\Gamma \limplies \Delta$, if $\frakA \models \Gamma$ implies $\frakA \models \Delta$ for all $\calL$-structures $\frakA$.
 
-    If $\emptyset \limplies \phi$, then we say that $\phi$ is \emph{valid} and write $\valid \phi$. This agrees with the definition of validity above.
+    Note the asymmetry in the roles played by structures and variable assignment functions in the definition of logical implication: It is \emph{not} the case that $\Gamma \limplies \Delta$ means that
+    %
+    \begin{equation*}
+        \frakA \sats{s} \Gamma
+        \quad \text{implies} \quad
+        \frakA \sats{s} \Delta
+    \end{equation*}
+    %
+    for all $\calL$-structures $\frakA$ and variable assignment functions $s$ into $\frakA$. This would require us to assign the same values to variables in $\Gamma$ and in $\Delta$, but this is not needed. However, it also does not mean that
+    %
+    \begin{equation*}
+        \frakA \sats{s} \Gamma
+        \quad \text{implies} \quad
+        \frakA \sats{t} \Delta
+    \end{equation*}
+    %
+    for all $\calL$-structures $\frakA$ and variable assignment functions $s,t$ into $\frakA$. This says that we require $\frakA \sats{t} \Delta$ to hold for all $t$ as soon as $\frakA \sats{s} \Gamma$ holds for \emph{some} $s$. But we only require $\frakA \sats{t} \Delta$ when we assume $\frakA \sats{s} \Gamma$ for \emph{all} $s$. That is, when proving $\frakA \sats{t} \Delta$ we may construct whatever $s$ we wish.
+
+    If $\emptyset \limplies \phi$, then we say that $\phi$ is \keyword{valid} and write $\valid \phi$. This agrees with the definition of validity above.
 \end{notelist}
 
 
 
 \begin{exerciseframed}[1.9.3]
-    Suppose that $\phi$ is an $\calL$-formula and $x$ is a variable. Prove that $\phi$ is valid if and only if $(\forall x)(\phi)$ is valid. Thus, if $\phi$ has free variables $x$, $y$, and $z$, $\phi$ will be valid if and only if $\forall x \forall y \forall z \phi$ is valid. The sentence $\forall x \forall y \forall z \phi$ is called the \emph{universal closure} of $\phi$.
+    Suppose that $\phi$ is an $\calL$-formula and $x$ is a variable. Prove that $\phi$ is valid if and only if $(\forall x)(\phi)$ is valid. Thus, if $\phi$ has free variables $x$, $y$, and $z$, $\phi$ will be valid if and only if $\forall x \forall y \forall z \phi$ is valid. The sentence $\forall x \forall y \forall z \phi$ is called the \keyword{universal closure} of $\phi$.
 \end{exerciseframed}
 
 \begin{solution}
     Notice that $\valid (\forall x)(\phi)$ if and only if $\frakA \sats{s} (\forall x)(\phi)$ for all $\calL$-structures $\frakA$ and variable assignment functions $s$ into $\frakA$. This is the case if and only if $\frakA \sats{s[x \mid a]} \phi$ for all $\frakA$, $s$ and elements $a$ in the universe $A$. If $\phi$ is valid then this follows.
     
-    Conversely, notice that $s = s[x \mid s(x)]$, so every variable assignment function into $\frakA$ is on the form $s[x \mid a]$ for some $s$ and $a$ in $A$. Hence the above implies that $\frakA \sats{s} \phi$ for all $\frakA$ and $s$. Hence $\frakA \models \phi$ for all $\frakA$, so $\valid \phi$.
+    Conversely, notice that $s = s[x \mid s(x)]$, so every variable assignment function into $\frakA$ is on the form $s[x \mid a]$ for some $s$ and $a$ in $A$. Hence if $(\forall x)(\phi)$ is valid, then the above implies that $\frakA \sats{s} \phi$ for all $\frakA$ and $s$. Thus $\frakA \models \phi$ for all $\frakA$, so $\valid \phi$.
 \end{solution}
 
 
@@ -498,9 +523,11 @@ Here $\false$ denotes the contradiction $[(\forall x)(x = x)] \land \neg [(\fora
 
 \chapter{Completeness and Compactness}
 
+\section*{Completeness}
+
 \begin{notelist}
-    \item[Completeness]
-    If $\Sigma \limplies \phi$, then $\Sigma \proves \phi$. We first show that it suffices to prove a seemingly weaker statement:
+    \item[Reducing to a weaker statement]
+    To prove that $\Sigma \limplies \phi$ implies $\Sigma \proves \phi$, we first show that it suffices to prove a seemingly weaker statement:
     %
     \begin{enumerate}
         \item In $\Sigma \proves \phi$ we may assume that $\phi$ is a sentence, since by Lemma~2.7.2, $\Sigma \proves \phi$ if and only if $\Sigma \proves \phi'$, where $\phi'$ is the universal closure of $\phi$. 
@@ -532,10 +559,13 @@ Here $\false$ denotes the contradiction $[(\forall x)(x = x)] \land \neg [(\fora
     %
     We prove the contrapositive: If $\Sigma$ is consistent, then there is a model of $\Sigma$.
 
-    Next we extend $\calL$ and $\Sigma$ by using the following constructions:
+    \item[Extending $\calL$ and $\Sigma$ recursively]
+    The model of $\Sigma$ we will construct will have a universe containing (equivalence classes of) variable-free terms, so we must ensure that $\calL$ has at least some constants. Furthermore, if $c$ is a constant and $P$ a unary predicate, then the set $\{\exists x P(x), \neg P(c)\}$ is consistent, but we must ensure the existence of a constant $c'$ such that $P(c')$ is true for this set to have a model. Hence we also add the axiom $\exists x P(x) \lcond P(c')$.
+    
+    We extend $\calL$ and $\Sigma$ by using the following constructions:
     %
     \begin{enumerate}
-        \item We \emph{extend $\calL$ by constants}: Let $c_n$ be a constant not in $\calL$ for all $n \in \posints$, and let $\tilde\calL = \calL \union \set{c_n}{n \in \posints}$. The constants $c_n$ are called \emph{Henkin constants}. Notice that since $\calL$ is countable, so is $\tilde\calL$. Furthermore, Lemma~3.2.3 shows that if $\Sigma$ is a consistent set of $\calL$-sentences, then it is also a consistent set of $\tilde\calL$-sentences.
+        \item We first \emph{extend $\calL$ by constants}: Let $c_n$ be a constant not in $\calL$ for all $n \in \posints$, and let $\tilde\calL = \calL \union \set{c_n}{n \in \posints}$. The constants $c_n$ are called \emph{Henkin constants}. Notice that since $\calL$ is countable, so is $\tilde\calL$. Furthermore, Lemma~3.2.3 shows that if $\Sigma$ is a consistent set of $\calL$-sentences, then it is also a consistent set of $\tilde\calL$-sentences.
         
         \item Since $\calL$ is countable, we may enumerate all sentences in $\calL$ on the form $(\exists x)(\theta)$. Notice that since these are sentences, the only free variable (if any) in $\theta$ is $x$. Denote these by $(\exists x)(\theta_n)$ for $n \in \posints$ and define the collection
         %
@@ -549,31 +579,35 @@ Here $\false$ denotes the contradiction $[(\forall x)(x = x)] \land \neg [(\fora
         \item Finally we define the set $\tilde\Sigma = \Sigma \union \tilde{H}$ of $\tilde\calL$-sentences. Lemma~3.2.4 shows that if $\Sigma$ is consistent, then $\tilde\Sigma$ is also consistent.
     \end{enumerate}
     %
-    Let $\calL_0 = \calL$ and $\Sigma_0 = \Sigma$. We apply the constructions above recursively as follows, for $n \in \naturals$:
+    Notice that we must add a Henkin constant for each existential sentence: Otherwise if $P$ is a unary predicate and $c$ a Henkin constant, then it might happen that $\exists x P(x) \lcond P(c)$ and $\exists x \neg P(x) \lcond \neg P(c)$ are Henkin axioms. The set $\{\exists x P(x), \exists x \neg P(x)\}$ is consistent, but adding these axioms makes it inconsistent.
+
+    Furthermore, it is not enough to perform this procedure once: We have only added a Henkin axiom for each existential $\calL$-sentence, but in extending $\calL$ to $\tilde\calL$ we might have added more existential sentences. Hence we apply the constructions above recursively as follows: Let $\calL_0 = \calL$ and $\Sigma_0 = \Sigma$. For $n \in \naturals$ we do the following:
     %
-    \begin{enumerate}
-        \item Given a (countable) language $\calL_n$, extend it by constants to obtain $\calL_{n+1}$.
+    \begin{enumerate}[label={(\alph*')}]
+        \item Given a (countable) language $\calL_n$, extend it by constants to obtain $\calL_{n+1}$. Then $\Sigma_n$ is a consistent set of $\calL_{n+1}$-sentences.
         \item Construct the set $H_{n+1}$ of Henkin axioms in the language $\calL_{n+1}$.
-        \item Define $\Sigma_{n+1} = \Sigma_n \union H_{n+1}$.
+        \item Define $\Sigma_{n+1} = \Sigma_n \union H_{n+1}$. Then $\Sigma_{n+1}$ is a consistent set of $\calL_{n+1}$-sentences.
     \end{enumerate}
     %
-    Finally let $\calL' = \bigunion_{n\in\naturals} \calL_n$ and $\hat\Sigma = \bigunion_{n\in\naturals} \Sigma_n$. Then the $\Sigma_n$ as well as $\hat\Sigma$ are consistent sets of $\calL'$-sentences [TODO].
+    Finally let $\calL' = \bigunion_{n\in\naturals} \calL_n$ and $\hat\Sigma = \bigunion_{n\in\naturals} \Sigma_n$. We claim that $\Sigma_n$ as well as $\hat\Sigma$ are consistent sets of $\calL'$-sentences: For $\Sigma_n$, notice that $\calL'$ can be obtained from $\calL_n$ by extending by constants, so Lemma~3.2.3 implies that $\Sigma_n$ is consistent. For $\hat\Sigma$, this is the content of \exref{3.2.2}
 
-    We next extend $\hat\Sigma$ further. Since $\calL'$ is countable, there exists an enumeration $\{\sigma_n\}_{n \in \posints}$ of all $\calL'$-sentences. Let $\Sigma^0 = \hat\Sigma$ and let
+    \item[Maximal extension of $\hat\Sigma$]
+    Since $\calL'$ is countable, there exists an enumeration $\{\sigma_k\}_{k \in \posints}$ of all $\calL'$-sentences. Let $\Sigma^0 = \hat\Sigma$ and let
     %
     \begin{equation*}
-        \Sigma^{n+1} =
+        \Sigma^{k+1} =
         \begin{cases}
-            \Sigma^n \union \{ \sigma_{n+1} \},
-                & \text{if $\Sigma^n \union \{ \sigma_{n+1} \}$ is consistent}, \\
-                \Sigma^n \union \{ \neg\sigma_{n+1} \},
+            \Sigma^k \union \{ \sigma_{k+1} \},
+                & \text{if $\Sigma^k \union \{ \sigma_{k+1} \}$ is consistent}, \\
+                \Sigma^k \union \{ \neg\sigma_{k+1} \},
                 & \text{otherwise}.
         \end{cases}
     \end{equation*}
     %
-    Let $\Sigma' = \bigunion_{n\in\naturals} \Sigma^n$. Then each $\Sigma^n$ and $\Sigma'$ are consistent [TODO], and $\Sigma'$ is the maximal consistent extension of $\hat\Sigma$. This also has the property that if $\sigma$ is a sentence, then $\sigma \in \Sigma'$ if and only if $\Sigma' \proves \sigma$.
+    Let $\Sigma' = \bigunion_{k\in\naturals} \Sigma^k$. Then each $\Sigma^k$ is consistent by \exref{3.2.3}, and $\Sigma'$ is consistent by \exref{3.2.2}. Furthermore, $\Sigma'$ is the maximal consistent extension of $\hat\Sigma$ since it contains all $\calL'$-sentences possible for consistency, and this is sufficient by Lemma~2.7.3. This also has the property that if $\sigma$ is a sentence, then $\sigma \in \Sigma'$ if and only if $\Sigma' \proves \sigma$ by \exref{3.2.5}.
 
-    Finally we construct a model of $\Sigma'$. First, let $T$ be the set of variable-free terms of $\calL'$, and let $t_1 \sim t_2$ if $(t_1 = t_2) \in \Sigma'$. [TODO ref] shows that this is an equivalence relation. We construct the model $\frakA$ as follows:
+    \item[Model of $\Sigma'$]
+    First, let $T$ be the set of variable-free terms of $\calL'$, and let $t_1 \sim t_2$ if $(t_1 = t_2) \in \Sigma'$. \exref{3.2.7} shows that this is an equivalence relation. We construct the model $\frakA$ as follows:
     %
     \begin{enumerate}
         \item \emph{Universe}: The universe $A$ is the quotient $T/{\sim}$.
@@ -587,13 +621,112 @@ Here $\false$ denotes the contradiction $[(\forall x)(x = x)] \land \neg [(\fora
                 = [f t_1 \cdots t_n].
         \end{equation*}
         %
-        [TODO rem ref] shows that this is well-defined.
+        This is shown to be well-defined by an argument similar to that of \exref{3.2.7}, showing that $\proves (t_1 = t_2 \lcond f(t_1) = f(t_2))$.
 
-        \item \emph{Relations}: Given an $n$-ary relation symbol $R$, we say that $R^\frakA([t_1], \ldots, [t_n])$ is true if $R t_1 \cdots t_n \in \Sigma'$. By [TODO ref] this is well-defined.
+        \item \emph{Relations}: Given an $n$-ary relation symbol $R$, we say that $R^\frakA([t_1], \ldots, [t_n])$ is true if $R t_1 \cdots t_n \in \Sigma'$. We show in \exref{3.2.8} that this is well-defined.
     \end{enumerate}
     %
-    Proposition~3.2.6 now shows that $\frakA \models \Sigma'$, so in particular $\frakA \models \Sigma$. Next define the restriction $\frakA|_\calL$ of $\frakA$ to $\calL$ in the obvious way. Then Lemma~3.2.7 shows that if $\sigma$ is an $\calL$-sentence, then $\frakA|_\calL \models \sigma$ if and only if $\frakA \models \sigma$. Thus we have $\frakA|_\calL \models \Sigma$ as desired.
+    Proposition~3.2.6 now shows that $\frakA \models \Sigma'$ by showing that $\sigma \in \Sigma'$ if and only if $\frakA \models \sigma$ for all sentences $\sigma$. This is done as follows:
+    %
+    \begin{enumerate}
+        \item If $\sigma$ is atomic, then this follows by definition of $\frakA$.
+        
+        \item If $\sigma$ is on the form $\neg\alpha$ or $\alpha \lor \beta$, then this easily follows by induction.
+        
+        \item If $(\forall x)\phi(x) \in \Sigma'$, then we must show that $\frakA \sats{s} \phi(t)$ for all $s$ and $t$, i.e. that $\frakA \models \phi(t)$ since $\phi(t)$ is a sentence. Since $(\forall x)\phi(x) \lcond \phi(t)$ is an axiom and $\Sigma' \proves (\forall x)\phi(x)$, then $\Sigma' \proves \phi(t)$. By induction, $\frakA \models \phi(t)$.
+
+        Conversely, if $(\forall x)\phi(x) \not\in \Sigma'$ then $\neg(\forall x)\phi(x) \in \Sigma'$, and so $(\exists x)\neg\phi(x) \in \Sigma'$. There is a Henkin constant $c$ such that $[(\exists x)\neg\phi(x) \lcond \neg\phi(c)] \in \Sigma'$, so $\neg\phi(c) \in \Sigma'$. By induction, $\frakA \models \neg\phi(c)$, i.e. $\frakA \not\models \phi(c)$, which implies that $\frakA \not\models (\forall x)\phi(x)$.
+    \end{enumerate}
+    %
+    In particular $\frakA \models \Sigma$.
+
+    \item[Restricting $\frakA$ to $\calL$]
+    Next define the restriction $\frakA|_\calL$ of $\frakA$ to $\calL$ in the obvious way. Then Lemma~3.2.7 shows that if $\sigma$ is an $\calL$-sentence, then $\frakA|_\calL \models \sigma$ if and only if $\frakA \models \sigma$. We prove this by showing that $\frakA|_\calL \models \sigma$ if and only if $\sigma \in \Sigma'$ as in the proof of Proposition~3.2.6. Thus we have $\frakA|_\calL \models \Sigma$ as desired.
 \end{notelist}
+
+
+\begin{remarkbreak}[$\overline{s}(t) = {[t]}$]
+    \label{rem:assignment-function-variable-free}
+    Let $t$ be a variable-free $\calL'$-term, and let $s$ be any assignment function into $\frakA$. Then we claim that $\overline{s}(t) = [t]$. (Of course, by Lemma~1.7.6 the value of $\overline{s}(t)$ should not depend on $s$, since $t$ contains no variables.) We show this by induction.
+
+    If $c$ is a constant, then by definition $\overline{s}(c) = [c]$. If $t \colonequiv ft_1 \cdots t_n$, then by induction we have
+    %
+    \begin{equation*}
+        \overline{s}(ft_1 \cdots t_n)
+            = f^\frakA(\overline{s}(t_1), \ldots \overline{s}(t_n))
+            = f^\frakA \bigl( [t_1], \ldots, [t_n] \bigr)
+            = [ft_1 \cdots t_n].
+    \end{equation*}
+    %
+    Notice that we here use the definition of $f^\frakA$: It is not immediately obvious where in the proof of Proposition~3.2.6 this is used, but this definition ensures that $R^\frakA$ is well-defined (see \exref{3.2.8}).
+\end{remarkbreak}
+
+
+\begin{exerciseframed}[3.2.2]
+    Assume that $\Sigma_0 \subseteq \Sigma_1 \subseteq \Sigma_2 \subseteq \cdots$ are such that each $\Sigma_n$ is a consistent set of sentences in a language $\calL$. Show $\hat\Sigma = \bigunion_{n\in\naturals} \Sigma_n$ is consistent.
+\end{exerciseframed}
+
+\begin{solution}
+    We prove that if $\hat\Sigma$ is inconsistent, then at least one $\Sigma_n$ is inconsistent, so let $D$ be a derivation of $\false$ from $\hat\Sigma$. Since $D$ is finite, it contains finitely many formulas from $\hat\Sigma$, say $\phi_1, \ldots, \phi_k$. Each $\phi_i$ then lies in some $\Sigma_i$, so let $n$ be the largest of these $i$. Then all $\phi_i$ lie in $\Sigma_n$, so $D$ is also a derivation of $\false$ from $\Sigma_n$, and hence $\Sigma_n$ is inconsistent.
+\end{solution}
+
+
+\begin{exerciseframed}[3.2.3]
+    Show that if $\Pi$ is any consistent set of sentences and $\sigma$ is a sentence such that $\Pi \union \{\sigma\}$ is inconsistent, then $\Pi \union \{\neg\sigma\}$ is consistent.
+\end{exerciseframed}
+
+\begin{solution}
+    We show that if $\Pi \union \{\neg\sigma\}$ is inconsistent, then so is $\Pi$. The former means that $\Pi \union \{\neg\sigma\} \proves \false$, which by \exref{2.7.4} implies that $\Pi \proves \sigma$. But since $\Pi \union \{\sigma\} \proves \false$ the same exercise implies that $\Pi \proves (\neg\sigma)$.\footnote{Here we use that we can derive $\sigma$ from $\neg\neg\sigma$, which is possible since the latter is a propositional consequence of the former.} Hence $\Pi \proves \{\sigma, (\neg\sigma)\}$, so $\Pi \proves \false$ by the same argument as in \exref{2.7.4}.
+\end{solution}
+
+
+\begin{exerciseframed}[3.2.5]
+    Prove Lemma~3.2.5: If $\sigma$ is a sentence, then $\sigma \in \Sigma'$ if and only if $\Sigma' \proves \sigma$.
+\end{exerciseframed}
+
+\begin{solution}
+    The \enquote{only if} part is obvious. The \enquote{if} part follows since if $\Sigma' \proves \sigma$ then $\Sigma' \union \{\sigma\}$ is consistent, and hence $\sigma \in \Sigma'$ by maximality.
+\end{solution}
+
+
+\begin{exerciseframed}[3.2.7]
+    Complete the proof of the claim on page 80 that the relation $\sim$ is an equivalence relation.
+\end{exerciseframed}
+
+\begin{solution}
+    The authors sketch a proof that $\sim$ is symmetric. We give a slightly different proof below. Notice that Theorem~2.7.1 shows that equality of \emph{variables} is an equivalence relation. We first show that equality of \emph{variable-free terms} is also an equivalence relation. % TODO: Only variable-free terms?
+    
+    Let $\phi(x,y,z)$ be one of the formulas in Theorem~2.7.1, so that $\proves \phi(x,y,z)$, and denote by $\phi(t_1,t_2,t_3)$ the formula obtained by replacing $x$ with the variable-free term $t_1$, $y$ with $t_2$, and $z$ with $t_3$ (notice that $t_1$ is substitutable for $x$, etc.). Then Lemma~2.7.2 shows that also $\proves (\forall x) (\forall y) (\forall z) \phi(x,y,z)$. The axiom (Q1) then has the instances
+    %
+    \begin{align*}
+        (\forall x) (\forall y) (\forall z) \phi(x,y,z)
+            &\lcond (\forall y) (\forall z) \phi(t_1,y,z), \\
+        (\forall y) (\forall z) \phi(t_1,y,z)
+            &\lcond (\forall z) \phi(t_1,t_2,z), \\
+        (\forall z) \phi(t_1,t_2,z)
+            &\lcond \phi(t_1,t_2,t_3),
+    \end{align*}
+    %
+    from which it is easy to derive that $\proves \phi(t_1,t_2,t_3)$. Hence equality of terms is an equivalence relation.
+
+    Next we prove that $\sim$ is transitive, since reflexivity and symmetry are easier, so assume that $t_1 \sim t_2$ and $t_2 \sim t_3$. By Lemma~3.2.5 (i.e. \exref{3.2.5}), this is the same as $\Sigma' \proves (t_1 = t_2)$ and $\Sigma' \proves (t_2 = t_3)$. Then it is clear that also $\Sigma' \proves [(t_1 = t_2) \land (t_2 = t_3)]$, and by the above this implies that $\Sigma' \proves (t_1 = t_3)$, i.e. that $t_1 \sim t_3$.
+\end{solution}
+
+
+\begin{exerciseframed}[3.2.8]
+    Show that the relation $R^\frakA$ of the structure $\frakA$ is well-defined.
+\end{exerciseframed}
+
+\begin{solution}
+    By Definition~1.7.4 and Definition~1.7.9, we say that $\frakA \models Rt_1 \cdots t_n$ if $(\overline{s}(t_1), \ldots, \overline{s}(t_n)) \in R^\frakA$ for all assignment functions $s$ into $\frakA$. By \cref{rem:assignment-function-variable-free} this means that $([t_1], \ldots, [t_n]) \in R^\frakA$, so we in other words define $R^\frakA$ by
+    %
+    \begin{equation*}
+        R^\frakA
+            = \set[\big]{ \bigl( [t_1], \ldots, [t_n] \bigr) \in A^n }{ Rt_1 \ldots t_n \in \Sigma' },
+    \end{equation*}
+    %
+    and we must show that this is well-defined. An argument similar to that of \exref{3.2.7} shows that $\proves [t_1 = t_2 \lcond (R(t_1) \lcond R(t_2))]$, which implies well-definition.
+\end{solution}
 
 
 \end{document}
